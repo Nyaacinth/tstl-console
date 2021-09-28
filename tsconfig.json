@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "lib": ["ESNext"],
+        "target": "ESNext",
+        "strict": true,
+        "rootDir": "source",
+        "outDir": "dist",
+        "declaration": true,
+        "moduleResolution": "Node",
+        "noImplicitOverride": true,
+        "resolveJsonModule": true,
+        "types": [
+            "lua-types/jit"
+        ]
+    },
+    "tstl": {
+        "luaLibImport": "inline",
+        "buildMode": "library"
+    }
+}

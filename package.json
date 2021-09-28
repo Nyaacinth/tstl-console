@@ -1,0 +1,12 @@
+{
+  "name": "tstl-console",
+  "version": "1.0.3",
+  "description": "Complete console module for tstl",
+  "main": "./dist/index",
+  "author": "Nyaacinth",
+  "license": "MIT",
+  "types": "./dist/index",
+  "devDependencies": {
+    "lua-types": "^2.11.0"
+  }
+}
