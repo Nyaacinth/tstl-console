@@ -210,6 +210,7 @@ namespace console {
     export function time(label: string = "default") {
         if (timers[label]) {
             printInfo("warn", `Timer "${label}" already exists`)
+            return
         }
         timers[label] = os.clock()
     }
@@ -221,6 +222,7 @@ namespace console {
     export function timeLog(label: string = "default") {
         if (!timers[label]) {
             printInfo("warn", `Timer "${label}" does not exist`)
+            return
         }
         print(label + ": " + (os.clock() - timers[label]).toString())
     }
@@ -249,7 +251,7 @@ namespace console {
                         }
                         return ">>> " + string.sub(result, 1, -3)
                     } else {
-                        return ""
+                        return "[Console required the traceback]"
                     }
                 })(),
                 2

@@ -1,10 +1,9 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
--- Lua Library inline imports
-function __TS__ArrayIsArray(value)
+---[[ Lua Library inline imports
+local function __TS__ArrayIsArray(value)
     return (type(value) == "table") and ((value[1] ~= nil) or (next(value, nil) == nil))
 end
-
-function __TS__ArrayForEach(arr, callbackFn)
+local function __TS__ArrayForEach(arr, callbackFn)
     do
         local i = 0
         while i < #arr do
@@ -13,16 +12,14 @@ function __TS__ArrayForEach(arr, callbackFn)
         end
     end
 end
-
-function __TS__ObjectGetOwnPropertyDescriptors(object)
+local function __TS__ObjectGetOwnPropertyDescriptors(object)
     local metatable = getmetatable(object)
     if not metatable then
         return {}
     end
     return rawget(metatable, "_descriptors") or ({})
 end
-
-function __TS__Delete(target, key)
+local function __TS__Delete(target, key)
     local descriptors = __TS__ObjectGetOwnPropertyDescriptors(target)
     local descriptor = descriptors[key]
     if descriptor then
@@ -41,6 +38,7 @@ function __TS__Delete(target, key)
     end
     return false
 end
+---]] Lua Library inline imports
 
 local ____exports = {}
 local L_debug = _G.debug
@@ -48,13 +46,13 @@ local console = {}
 do
     local color_codes = {reset = "\027[0m", trace = "\027[34m", debug = "\027[36m", info = "\027[32m", warn = "\027[33m", error = "\027[31m", fatal = "\027[35m"}
     local _isWindows
-    local function isWindows(self)
+    local function isWindows()
         if isWindows == nil then
             _isWindows = (loadstring or load)("type(package) == 'table' and type(package.config) == 'string' and package.config:sub(1,1) == '\\'")()
         end
         return _isWindows
     end
-    local function dumpString(self, obj)
+    local function dumpString(_, obj)
         if type(obj) == "table" then
             if __TS__ArrayIsArray(obj) then
                 if #obj > 0 then
@@ -94,25 +92,25 @@ do
     end
     local indent = 0
     local indent_symbol = "    "
-    local function printInfo(self, info_type, ...)
+    local function printInfo(_, info_type, ...)
         local contents = {...}
         local all_content = ""
         for ____, content in ipairs(contents) do
             all_content = all_content .. ((((type(content) == "string") and content) or dumpString(nil, content)) .. "\t")
         end
-        local color = (isWindows(nil) and "") or (color_codes[info_type] or "")
-        local reset = (isWindows(nil) and "") or color_codes.reset
+        local color = (isWindows() and "") or (color_codes[info_type] or "")
+        local reset = (isWindows() and "") or color_codes.reset
         print(
             string.rep(indent_symbol, indent) .. ((((((((color .. "[") .. string.upper(info_type)) .. " ") .. os.date("%X")) .. "] >>>") .. tostring(reset)) .. " ") .. all_content)
         )
     end
-    function console.assert(self, assertion, ...)
+    function console.assert(_, assertion, ...)
         local messages = {...}
         if assertion then
             return
         end
-        local color = (isWindows(nil) and "") or color_codes.error
-        local reset = (isWindows(nil) and "") or color_codes.reset
+        local color = (isWindows() and "") or color_codes.error
+        local reset = (isWindows() and "") or color_codes.reset
         print(
             (tostring(color) .. L_debug.traceback(
                 "Assertion failed: " .. (function()
@@ -129,12 +127,12 @@ do
                     else
                         return "(no messages)"
                     end
-                end)(nil),
+                end)(),
                 2
             )) .. tostring(reset)
         )
     end
-    function console.clear(self)
+    function console.clear()
         if not os.execute("clear") then
             if not os.execute("cls") then
                 do
@@ -149,7 +147,7 @@ do
         print("[Console was cleared]")
     end
     local count_storage = {}
-    function console.count(self, label)
+    function console.count(_, label)
         if label == nil then
             label = "default"
         end
@@ -163,7 +161,7 @@ do
             (label .. ": ") .. tostring(count_storage[label_src])
         )
     end
-    function console.countReset(self, label)
+    function console.countReset(_, label)
         if label == nil then
             label = "default"
         end
@@ -175,40 +173,42 @@ do
             end
         end
     end
-    function console.debug(self, ...)
+    function console.debug(_, ...)
         printInfo(nil, "debug", ...)
     end
-    function console.error(self, ...)
+    function console.error(_, ...)
         printInfo(nil, "error", ...)
     end
-    function console.group(self)
+    function console.group()
         indent = indent + 1
     end
-    function console.groupEnd(self)
+    function console.groupEnd()
         indent = math.max(0, indent - 1)
     end
-    function console.info(self, ...)
+    function console.info(_, ...)
         printInfo(nil, "info", ...)
     end
-    function console.log(self, ...)
+    function console.log(_, ...)
         printInfo(nil, "log", ...)
     end
     local timers
-    function console.time(self, label)
+    function console.time(_, label)
         if label == nil then
             label = "default"
         end
         if timers[label] then
             printInfo(nil, "warn", ("Timer \"" .. label) .. "\" already exists")
+            return
         end
         timers[label] = os.clock()
     end
-    function console.timeLog(self, label)
+    function console.timeLog(_, label)
         if label == nil then
             label = "default"
         end
         if not timers[label] then
             printInfo(nil, "warn", ("Timer \"" .. label) .. "\" does not exist")
+            return
         end
         print(
             (label .. ": ") .. tostring(
@@ -216,14 +216,14 @@ do
             )
         )
     end
-    function console.timeEnd(self, label)
+    function console.timeEnd(_, label)
         if label == nil then
             label = "default"
         end
         console.timeLog(nil, label)
         __TS__Delete(timers, label)
     end
-    function console.trace(self, ...)
+    function console.trace(_, ...)
         local objs = {...}
         print(
             L_debug.traceback(
@@ -239,14 +239,14 @@ do
                         end
                         return ">>> " .. string.sub(result, 1, -3)
                     else
-                        return ""
+                        return "[Console required the traceback]"
                     end
-                end)(nil),
+                end)(),
                 2
             )
         )
     end
-    function console.warn(self, ...)
+    function console.warn(_, ...)
         printInfo(nil, "warn", ...)
     end
 end
