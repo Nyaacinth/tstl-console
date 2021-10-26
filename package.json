@@ -1,6 +1,6 @@
 {
   "name": "tstl-console",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Complete console module for tstl",
   "main": "./dist/index",
   "author": "Nyaacinth",

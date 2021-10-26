@@ -48,7 +48,7 @@ do
     local _isWindows
     local function isWindows()
         if isWindows == nil then
-            _isWindows = (loadstring or load)("type(package) == 'table' and type(package.config) == 'string' and package.config:sub(1,1) == '\\'")()
+            _isWindows = (loadstring or load)("return type(package) == 'table' and type(package.config) == 'string' and package.config:sub(1,1) == '\\\\'")()
         end
         return _isWindows
     end

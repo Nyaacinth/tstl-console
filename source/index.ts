@@ -19,7 +19,7 @@ namespace console {
     /** Check if running windows */
     function isWindows() {
         if (isWindows == undefined) {
-            _isWindows = (loadstring ?? load)("type(package) == 'table' and type(package.config) == 'string' and package.config:sub(1,1) == '\\'")[0]!()
+            _isWindows = (loadstring ?? load)("return type(package) == 'table' and type(package.config) == 'string' and package.config:sub(1,1) == '\\\\'")[0]!()
         }
         return _isWindows
     }
